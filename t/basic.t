@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 use Test::Differences;
-use Test::More tests => 1;
+use Test::More tests => 2;
 
 use HTML::WikiConverter;
 
@@ -48,5 +48,29 @@ Some random text.
 |---|---|
 | 1 | 2  |
 | 3 | 42  |
+EOF
+}
+
+{
+    my $wiki = $wc->html2wiki( <<'EOF' );
+<html>
+<head>
+<title>My Title</title>
+</head>
+<body>
+
+<p>
+<a href="http://example.com/">Some random text</a>.
+</p>
+</body>
+</html>
+EOF
+
+    eq_or_diff( $wiki . "\n", <<'EOF', 'got expected wikitext back' );
+Title: My Title
+
+[Some random text][1].
+
+  [1]: http://example.com/
 EOF
 }

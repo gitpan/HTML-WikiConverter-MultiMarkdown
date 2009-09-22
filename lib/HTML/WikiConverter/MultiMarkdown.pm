@@ -3,7 +3,7 @@ package HTML::WikiConverter::MultiMarkdown;
 use strict;
 use warnings;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use base 'HTML::WikiConverter::Markdown';
 
@@ -34,8 +34,12 @@ sub rules
 
 sub attributes
 {
+    my $self = shift;
+
     return
-        ( strip_tags => { type => ARRAYREF, default => [ qw( ~comment script style / ) ] } );
+        { %{ $self->SUPER::attributes() },
+          strip_tags => { type => ARRAYREF, default => [ qw( ~comment script style / ) ] },
+        };
 }
 
 sub _title
